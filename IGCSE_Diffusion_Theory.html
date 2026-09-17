@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cover Lesson: Diffusion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for interactive elements */
+        .blank-input {
+            width: 120px;
+            border-bottom: 2px solid #60747A; /* Cool Grey */
+            background: transparent;
+            text-align: center;
+            font-weight: bold;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .blank-input:focus {
+            border-bottom-color: #00AFD7; /* Nexus Blue */
+        }
+        .correct { color: #17657A; border-color: #C4D600 !important; } /* Dark Teal / Nexus Green */
+        .incorrect { color: #E76F51; border-color: #E76F51 !important; } /* Coral */
+        
+        .quiz-option {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-option:hover {
+            background-color: #E8F7FA; /* Pale Blue */
+        }
+        .quiz-option.selected {
+            border-color: #00AFD7; /* Nexus Blue */
+            background-color: #E8F7FA; /* Pale Blue */
+        }
+        .quiz-option.correct-answer {
+            background-color: #F3F7D9; /* Pale Green */
+            border-color: #C4D600; /* Nexus Green */
+            color: #123B4A; /* Deep Navy */
+        }
+        .quiz-option.wrong-answer {
+            background-color: #FFFFFF; /* White */
+            border-color: #E76F51; /* Coral */
+            color: #123B4A; /* Deep Navy */
+        }
+
+        .math-input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #DCE5E7; /* Light Grey */
+            border-radius: 0.25rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="bg-[#F8FAFA] text-[#123B4A] font-sans antialiased">
+
+    <div class="max-w-4xl mx-auto p-6 md:p-8 bg-white shadow-lg my-8 rounded-xl">
+        
+        <header class="mb-8 border-b border-[#DCE5E7] pb-6">
+            <h1 class="text-3xl md:text-4xl font-bold text-[#123B4A] mb-2">Biology IGCSE Lesson: Diffusion</h1>
+            <div class="bg-[#E8F7FA] p-4 rounded-lg mt-4">
+                <h2 class="font-semibold text-[#17657A] text-lg mb-2">Learning Objectives:</h2>
+                <ul class="list-disc pl-5 space-y-1 text-[#123B4A]">
+                    <li>Understand the process of diffusion by which substances move into and out of cells.</li>
+                    <li>Understand how factors affect the rate of movement of substances into and out of cells (surface area to volume ratio, distance, temperature, and concentration gradient).</li>
+                </ul>
+            </div>
+            <p class="mt-4 text-[#60747A] italic">Instructions: Work through the sections below independently. Read the text, watch the video, and complete all the interactive activities.</p>
+        </header>
+
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-[#123B4A] mb-4 border-l-4 border-[#00AFD7] pl-3">Part 1: What is Diffusion?</h2>
+            
+            <div class="prose max-w-none text-[#60747A]">
+                <p class="mb-4">Small molecules can cross the cell membrane. If there is a difference in concentrations, diffusion will occur.</p>
+                
+                <div class="bg-[#F8FAFA] p-4 rounded-lg my-6 text-center font-medium text-lg border border-[#DCE5E7]">
+                    <span class="text-[#00AFD7] font-bold">Diffusion</span> is the movement of molecules from an area of <span class="text-[#00AFD7] font-bold">high concentration</span> to an area of <span class="text-[#00AFD7] font-bold">low concentration</span>.
+                </div>
+
+                <p class="mb-4">It's a <strong class="text-[#123B4A]">passive</strong> process - it requires no energy (ATP) from the cell to occur.</p>
+                <p class="mb-6">Diffusion is finished once <strong class="text-[#17657A]">equilibrium</strong> has been achieved (the molecules are evenly spread out).</p>
+
+                <img src="diffusion.png" alt="Diffusion Diagram" class="w-full h-auto rounded shadow-sm mb-8 border border-[#DCE5E7] bg-white p-2">
+
+                <h3 class="text-xl font-semibold mt-8 mb-3 text-[#123B4A]">Factors Affecting the Rate of Diffusion</h3>
+                <p class="mb-2">There are <strong>four factors</strong> that can change the rate of diffusion:</p>
+                <ol class="list-decimal pl-6 space-y-2 mb-6">
+                    <li><strong>Concentration gradient:</strong> A steeper gradient (bigger difference in concentration) means faster diffusion.</li>
+                    <li><strong>Temperature:</strong> Higher temperatures give molecules more kinetic energy, making them move and diffuse faster.</li>
+                    <li><strong>Surface area:</strong> A larger surface area provides more space for molecules to cross, increasing the rate.</li>
+                    <li><strong>Diffusion distance:</strong> A shorter distance means molecules don't have as far to travel, so diffusion happens faster.</li>
+                </ol>
+            </div>
+        </section>
+
+        <section class="mb-12 bg-[#F8FAFA] p-6 rounded-xl border border-[#DCE5E7]">
+            <h2 class="text-2xl font-bold text-[#123B4A] mb-4 border-l-4 border-[#00AFD7] pl-3">Part 2: Watch and Learn</h2>
+            <p class="mb-4 text-[#60747A]">Watch this short video to learn more about the factors that affect diffusion.</p>
+            
+            <div class="bg-white p-8 rounded-lg border border-[#DCE5E7] shadow-sm text-center">
+                <p class="mb-6 text-[#60747A]"><em>Note: The creator of this specific video has restricted it from playing directly inside other websites. Please click the button below to watch it safely on YouTube.</em></p>
+                <a href="https://www.youtube.com/watch?v=lxHMJaXOzP4" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center bg-[#00AFD7] hover:bg-[#17657A] text-white font-bold py-3 px-8 rounded-lg shadow-md transition duration-200 text-lg">
+                    <svg class="w-7 h-7 mr-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    Watch "What is Diffusion?" on YouTube
+                </a>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-[#123B4A] mb-4 border-l-4 border-[#00AFD7] pl-3">Part 3: Fill in the Blanks</h2>
+            <p class="mb-4 text-[#60747A]">Test your understanding of the reading and video by typing the correct words into the blanks.</p>
+            
+            <div class="bg-[#E8F7FA] p-6 rounded-lg leading-relaxed text-lg text-[#123B4A]" id="fill-blanks-container">
+                Diffusion is the net movement of particles from an area of <input type="text" class="blank-input" data-answer="high" placeholder="???"> concentration to an area of <input type="text" class="blank-input" data-answer="low" placeholder="???"> concentration. 
+                <br><br>
+                Because diffusion relies on the natural movement of particles, it does not require any <input type="text" class="blank-input" data-answer="energy" placeholder="???">, which means it is a <input type="text" class="blank-input" data-answer="passive" placeholder="???"> process.
+                <br><br>
+                The rate of diffusion is faster when the <input type="text" class="blank-input" data-answer="temperature" placeholder="???"> is higher, because the particles have more kinetic energy. It is also faster if the <input type="text" class="blank-input" data-answer="distance" placeholder="???"> they have to travel is very short.
+            </div>
+            
+            <button id="check-blanks-btn" class="mt-4 bg-[#00AFD7] hover:bg-[#17657A] text-white font-bold py-2 px-6 rounded shadow transition duration-200">
+                Check Answers
+            </button>
+            <p id="blanks-feedback" class="mt-2 font-semibold hidden"></p>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-[#123B4A] mb-4 border-l-4 border-[#00AFD7] pl-3">Part 4: Progress Check (Diffusion)</h2>
+            <p class="mb-6 text-[#60747A]">Answer the following questions to check your understanding of diffusion so far.</p>
+
+            <div class="quiz-block space-y-6">
+                <!-- Question 1 -->
+                <div class="quiz-question bg-white border border-[#DCE5E7] rounded-lg p-5 shadow-sm" data-correct="1">
+                    <h3 class="font-bold text-lg mb-3 text-[#123B4A]">1. Which statement best describes diffusion?</h3>
+                    <div class="space-y-2 text-[#60747A]">
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="0">Movement of molecules from low to high concentration, requiring energy.</div>
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="1">Movement of molecules from high to low concentration, not requiring energy.</div>
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="2">Movement of water molecules only, requiring energy.</div>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="quiz-question bg-white border border-[#DCE5E7] rounded-lg p-5 shadow-sm" data-correct="2">
+                    <h3 class="font-bold text-lg mb-3 text-[#123B4A]">2. How does temperature affect the rate of diffusion?</h3>
+                    <div class="space-y-2 text-[#60747A]">
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="0">Higher temperatures slow down diffusion because particles clump together.</div>
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="1">Temperature has no effect on diffusion.</div>
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="2">Higher temperatures speed up diffusion because particles have more kinetic energy.</div>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="quiz-question bg-white border border-[#DCE5E7] rounded-lg p-5 shadow-sm" data-correct="1">
+                    <h3 class="font-bold text-lg mb-3 text-[#123B4A]">3. What does it mean when a transport process is described as "passive"?</h3>
+                    <div class="space-y-2 text-[#60747A]">
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="0">It requires a lot of ATP energy from the cell to pump molecules.</div>
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="1">It does not require any energy (ATP) from the cell to occur.</div>
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="2">It only happens when the cell is at rest or sleeping.</div>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="quiz-question bg-white border border-[#DCE5E7] rounded-lg p-5 shadow-sm" data-correct="1">
+                    <h3 class="font-bold text-lg mb-3 text-[#123B4A]">4. When is the process of diffusion considered to have reached equilibrium?</h3>
+                    <div class="space-y-2 text-[#60747A]">
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="0">When all the molecules are gathered tightly on one side of the membrane.</div>
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="1">When molecules are relatively equally distributed and there is no longer a net movement.</div>
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="2">When the cell runs out of energy to keep molecules moving.</div>
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="quiz-question bg-white border border-[#DCE5E7] rounded-lg p-5 shadow-sm" data-correct="0">
+                    <h3 class="font-bold text-lg mb-3 text-[#123B4A]">5. How does a concentration gradient affect the rate of diffusion?</h3>
+                    <div class="space-y-2 text-[#60747A]">
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="0">A steeper gradient (bigger difference in concentration) means faster diffusion.</div>
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="1">A steeper gradient means slower diffusion because there is a traffic jam of molecules.</div>
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="2">The concentration gradient has no effect on how fast diffusion happens.</div>
+                    </div>
+                </div>
+
+                <button class="submit-quiz-btn mt-4 bg-[#C4D600] hover:bg-[#AEC000] text-[#123B4A] font-bold py-3 px-8 rounded-lg shadow-lg transition duration-200 w-full md:w-auto text-lg">
+                    Submit Part 4
+                </button>
+                <div class="quiz-results mt-4 p-4 rounded-lg hidden text-center font-bold text-xl"></div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-[#123B4A] mb-4 border-l-4 border-[#00AFD7] pl-3">Part 5: Surface Area to Volume Ratio</h2>
+            
+            <div class="prose max-w-none text-[#60747A] mb-8">
+                <p class="text-lg mb-4">A cell needs substances such as oxygen and glucose to enter so that chemical reactions can take place in the cytoplasm. These reactions are part of the cell's <strong>metabolism</strong> and require a constant supply of substances.</p>
+                
+                <div class="grid md:grid-cols-2 gap-6 my-6">
+                    <div class="bg-[#E8F7FA] p-5 rounded-lg border border-[#DCE5E7] shadow-sm">
+                        <h4 class="font-bold text-[#17657A] mb-2 text-lg">Surface Area = Supply Gateway</h4>
+                        <p class="text-[#123B4A]">The surface area of a cell is important because the surface is made up of the cell membrane, where substances can diffuse into and out of the cell. A larger surface area means there is more membrane available for diffusion.</p>
+                    </div>
+                    <div class="bg-[#F3F7D9] p-5 rounded-lg border border-[#C4D600] shadow-sm">
+                        <h4 class="font-bold text-[#17657A] mb-2 text-lg">Volume = Cellular Demand</h4>
+                        <p class="text-[#123B4A]">The volume of a cell is important because the cytoplasm contains the machinery and substances needed for metabolic reactions. As cell volume increases, there is more cytoplasm and therefore a greater demand for substances such as oxygen and glucose.</p>
+                    </div>
+                </div>
+
+                <div class="bg-[#F8FAFA] p-5 rounded-lg border-l-4 border-[#17657A] shadow-sm mb-8 text-[#123B4A]">
+                    <h4 class="font-bold text-[#123B4A] mb-2 text-lg">Why Cells Must Remain Small</h4>
+                    <p class="mb-2">Therefore, a cell needs a large surface area compared with its volume. This means there is enough cell membrane available for substances to enter by diffusion to meet the demands of the metabolic reactions taking place inside the cell.</p>
+                    <p>If a cell becomes too large, its volume increases faster than its surface area. There is then relatively less membrane available for each unit of cytoplasm. Substances cannot enter quickly enough to meet the cell's metabolic demands, and waste products may also take too long to leave.</p>
+                </div>
+
+                <!-- MISCONCEPTION ALERT BOX -->
+                <div class="bg-[#F8FAFA] border-l-4 border-[#F4B942] p-6 rounded-lg shadow-sm mb-8">
+                    <h4 class="font-bold text-[#123B4A] mb-2 text-xl flex items-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Clearing up a common misconception!
+                    </h4>
+                    <p class="text-[#17657A] font-semibold mb-4 text-lg">Surface area to volume ratio is NOT a measure of how big something is. It tells us how much surface is available compared with how much is inside.</p>
+                    
+                    <div class="bg-white p-5 rounded-lg border border-[#DCE5E7] mb-5 shadow-inner text-[#123B4A]">
+                        <p class="font-bold mb-3 text-lg border-b border-[#DCE5E7] pb-2">Which has better access?</p>
+                        <ul class="space-y-3 mb-4 text-lg">
+                            <li class="flex items-center">🏠 <strong class="ml-2 mr-1">House A:</strong> 2 people, 1 door</li>
+                            <li class="flex items-center">🏢 <strong class="ml-2 mr-1">House B:</strong> 20 people, 4 doors</li>
+                        </ul>
+                        <p class="bg-[#F4B942]/20 p-3 rounded font-medium">House B has more doors, but it has <em>fewer doors per person</em>.</p>
+                    </div>
+                    
+                    <p class="mb-5 text-[#123B4A] text-lg">That's exactly what happens when a cell gets larger: it can have more membrane, but it has <strong class="text-[#123B4A] underline">less membrane available per unit of cytoplasm</strong>.</p>
+                    
+                    <div class="text-center mt-2">
+                    <span class="inline-block bg-[#123B4A] text-white font-black px-6 py-3 rounded-full text-xl shadow-md transform hover:scale-105 transition-transform">
+                        “Surface area is the supply. Volume is the demand.”
+                    </span>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-semibold mb-4 text-[#123B4A]">Visualizing the SA:V Ratio</h3>
+                <p class="mb-4 text-[#60747A]">The Surface Area to Volume (SA:V) ratio is the relationship between how much volume is inside a structure and its total external surface area. SA:V ratios are not just about how big something is, but also about the shape it is.</p>
+                
+                <img src="SAV.png" alt="Surface Area Diagram" class="w-full h-auto rounded shadow-sm mb-4 border border-[#DCE5E7] bg-white p-2">
+
+                <!-- Question below the image -->
+                <div class="bg-[#E8F7FA] p-4 rounded-lg border border-[#00AFD7] mb-8 text-[#123B4A] text-lg shadow-sm">
+                    <strong>Look at the diagram above:</strong> The cell on the left has the <em>same volume</em> as the 27 small cells on the right, but their difference in surface area is huge. <br><br>
+                    <span class="font-bold text-[#17657A] text-xl block mt-2">Which cell would be able to carry out reactions faster?</span>
+                </div>
+                
+                <img src="cube.png" alt="Cube Diagram" class="max-w-md mx-auto h-auto rounded shadow-sm mb-6 border border-[#DCE5E7] block bg-white p-2">
+            </div>
+
+            <h3 class="text-xl font-semibold mb-4 text-[#123B4A]">Practice Calculations</h3>
+            <p class="mb-4 text-[#60747A]">Use the formulas provided to calculate the missing values in the table below. (Calculators allowed!)</p>
+            
+            <div class="bg-[#F8FAFA] border border-[#DCE5E7] p-4 rounded-lg mb-4 text-sm font-mono text-center text-[#123B4A]">
+                <p>For a cube with side length <strong>A</strong>:</p>
+                <p>Volume = <strong>A × A × A</strong> (cm³)</p>
+                <p>Surface Area = <strong>6 × (A × A)</strong> (cm²)</p>
+                <p>SA:V Ratio = <strong>Surface Area ÷ Volume</strong></p>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-[#DCE5E7] shadow-sm rounded-lg overflow-hidden">
+                    <thead class="bg-[#E8F7FA] text-[#123B4A]">
+                        <tr>
+                            <th class="py-3 px-4 border-b border-[#DCE5E7] text-center font-semibold">Length of Side (cm)</th>
+                            <th class="py-3 px-4 border-b border-[#DCE5E7] text-center font-semibold">Volume (cm³)</th>
+                            <th class="py-3 px-4 border-b border-[#DCE5E7] text-center font-semibold">Surface Area (cm²)</th>
+                            <th class="py-3 px-4 border-b border-[#DCE5E7] text-center font-semibold">SA ÷ Volume (Ratio)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="math-table-body" class="text-[#123B4A]">
+                        <!-- Row 1 -->
+                        <tr class="hover:bg-[#F8FAFA]">
+                            <td class="py-3 px-4 border-b border-[#DCE5E7] text-center font-bold">1</td>
+                            <td class="py-3 px-4 border-b border-[#DCE5E7]"><input type="number" class="math-input" data-answer="1"></td>
+                            <td class="py-3 px-4 border-b border-[#DCE5E7]"><input type="number" class="math-input" data-answer="6"></td>
+                            <td class="py-3 px-4 border-b border-[#DCE5E7]"><input type="number" class="math-input" data-answer="6" step="0.01"></td>
+                        </tr>
+                        <!-- Row 5 -->
+                        <tr class="hover:bg-[#F8FAFA]">
+                            <td class="py-3 px-4 border-b border-[#DCE5E7] text-center font-bold">5</td>
+                            <td class="py-3 px-4 border-b border-[#DCE5E7]"><input type="number" class="math-input" data-answer="125"></td>
+                            <td class="py-3 px-4 border-b border-[#DCE5E7]"><input type="number" class="math-input" data-answer="150"></td>
+                            <td class="py-3 px-4 border-b border-[#DCE5E7]"><input type="number" class="math-input" data-answer="1.2" step="0.01"></td>
+                        </tr>
+                        <!-- Row 16 (Example filled) -->
+                        <tr class="bg-[#F3F7D9]">
+                            <td class="py-3 px-4 border-b border-[#DCE5E7] text-center font-bold">16</td>
+                            <td class="py-3 px-4 border-b border-[#DCE5E7] text-center">4096</td>
+                            <td class="py-3 px-4 border-b border-[#DCE5E7] text-center">1536</td>
+                            <td class="py-3 px-4 border-b border-[#DCE5E7] text-center">1536 ÷ 4096 = 0.375</td>
+                        </tr>
+                        <!-- Row 20 -->
+                        <tr class="hover:bg-[#F8FAFA]">
+                            <td class="py-3 px-4 border-b border-[#DCE5E7] text-center font-bold">20</td>
+                            <td class="py-3 px-4 border-b border-[#DCE5E7]"><input type="number" class="math-input" data-answer="8000"></td>
+                            <td class="py-3 px-4 border-b border-[#DCE5E7]"><input type="number" class="math-input" data-answer="2400"></td>
+                            <td class="py-3 px-4 border-b border-[#DCE5E7]"><input type="number" class="math-input" data-answer="0.3" step="0.01"></td>
+                        </tr>
+                        <!-- Row 100 -->
+                        <tr class="hover:bg-[#F8FAFA]">
+                            <td class="py-3 px-4 border-b border-[#DCE5E7] text-center font-bold">100</td>
+                            <td class="py-3 px-4 border-b border-[#DCE5E7]"><input type="number" class="math-input" data-answer="1000000"></td>
+                            <td class="py-3 px-4 border-b border-[#DCE5E7]"><input type="number" class="math-input" data-answer="60000"></td>
+                            <td class="py-3 px-4 border-b border-[#DCE5E7]"><input type="number" class="math-input" data-answer="0.06" step="0.01"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-4 flex flex-col md:flex-row items-center justify-between gap-4">
+                <button id="check-math-btn" class="bg-[#00AFD7] hover:bg-[#17657A] text-white font-bold py-2 px-6 rounded shadow transition duration-200">
+                    Check Math
+                </button>
+            </div>
+            <p id="math-feedback" class="mt-2 font-semibold hidden"></p>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-[#123B4A] mb-4 border-l-4 border-[#00AFD7] pl-3">Part 6: Progress Check (SA:V)</h2>
+            <p class="mb-6 text-[#60747A]">Answer the following questions based on what you just learned about Surface Area to Volume ratios.</p>
+
+            <div class="quiz-block space-y-6">
+                <!-- Question 1 -->
+                <div class="quiz-question bg-white border border-[#DCE5E7] rounded-lg p-5 shadow-sm" data-correct="2">
+                    <h3 class="font-bold text-lg mb-3 text-[#123B4A]">1. Why is having a large Surface Area to Volume (SA:V) ratio important for cells?</h3>
+                    <div class="space-y-2 text-[#60747A]">
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="0">It makes the cell heavier, larger, and much stronger.</div>
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="1">It stops harmful waste substances from entering the cell membrane.</div>
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="2">It ensures there is enough membrane available for substances to diffuse fast enough to meet metabolic demands.</div>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="quiz-question bg-white border border-[#DCE5E7] rounded-lg p-5 shadow-sm" data-correct="1">
+                    <h3 class="font-bold text-lg mb-3 text-[#123B4A]">2. As a cell grows larger in size, what happens to its surface area to volume ratio?</h3>
+                    <div class="space-y-2 text-[#60747A]">
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="0">It increases, because the surface area grows much faster than the volume.</div>
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="1">It decreases, because the internal volume grows much faster than the outer surface area.</div>
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="2">It stays exactly the same no matter how big the cell gets.</div>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="quiz-question bg-white border border-[#DCE5E7] rounded-lg p-5 shadow-sm" data-correct="0">
+                    <h3 class="font-bold text-lg mb-3 text-[#123B4A]">3. Thinking about the "Supply and Demand" rule for cells, what does the <em>volume</em> represent?</h3>
+                    <div class="space-y-2 text-[#60747A]">
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="0">The demand for substances needed for metabolism by the cytoplasm.</div>
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="1">The gateway supplying substances to the cell.</div>
+                        <div class="quiz-option border border-[#DCE5E7] rounded p-3" data-val="2">The distance molecules have to travel to reach equilibrium.</div>
+                    </div>
+                </div>
+
+                <button class="submit-quiz-btn mt-4 bg-[#C4D600] hover:bg-[#AEC000] text-[#123B4A] font-bold py-3 px-8 rounded-lg shadow-lg transition duration-200 w-full md:w-auto text-lg">
+                    Submit Part 6
+                </button>
+                <div class="quiz-results mt-4 p-4 rounded-lg hidden text-center font-bold text-xl"></div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-[#123B4A] mb-4 border-l-4 border-[#00AFD7] pl-3">Part 7: Final Keyword Matching</h2>
+            <p class="mb-4 text-[#60747A]">Drag the keyword on the left to match its correct definition on the right to complete the lesson!</p>
+            
+            <div class="flex flex-col md:flex-row gap-8 items-stretch">
+                <div class="md:w-1/3 flex flex-col gap-3" id="keywords-container">
+                    <!-- Shuffled keywords will be injected here by JS -->
+                </div>
+
+                <div class="md:w-2/3 flex flex-col gap-3" id="definitions-container">
+                    <!-- Definitions will be injected here by JS -->
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Logic for Fill in the Blanks ---
+            const checkBlanksBtn = document.getElementById('check-blanks-btn');
+            const blankInputs = document.querySelectorAll('.blank-input');
+            const blanksFeedback = document.getElementById('blanks-feedback');
+
+            checkBlanksBtn.addEventListener('click', () => {
+                let correctCount = 0;
+                blankInputs.forEach(input => {
+                    const expected = input.getAttribute('data-answer').toLowerCase();
+                    const actual = input.value.trim().toLowerCase();
+                    
+                    input.classList.remove('correct', 'incorrect');
+                    
+                    if (actual === expected) {
+                        input.classList.add('correct');
+                        correctCount++;
+                    } else {
+                        input.classList.add('incorrect');
+                    }
+                });
+
+                blanksFeedback.classList.remove('hidden', 'text-[#17657A]', 'text-[#E76F51]');
+                if (correctCount === blankInputs.length) {
+                    blanksFeedback.textContent = "Great job! All blanks filled correctly.";
+                    blanksFeedback.classList.add('text-[#17657A]');
+                } else {
+                    blanksFeedback.textContent = `You got ${correctCount} out of ${blankInputs.length} correct. Try again!`;
+                    blanksFeedback.classList.add('text-[#E76F51]');
+                }
+            });
+
+            // --- Logic for Math Table ---
+            const checkMathBtn = document.getElementById('check-math-btn');
+            const mathInputs = document.querySelectorAll('.math-input');
+            const mathFeedback = document.getElementById('math-feedback');
+
+            checkMathBtn.addEventListener('click', () => {
+                let correctCount = 0;
+                mathInputs.forEach(input => {
+                    const expected = parseFloat(input.getAttribute('data-answer'));
+                    const actual = parseFloat(input.value);
+                    
+                    input.classList.remove('correct', 'incorrect');
+                    
+                    if (actual === expected) {
+                        input.classList.add('correct');
+                        correctCount++;
+                    } else {
+                        input.classList.add('incorrect');
+                    }
+                });
+
+                mathFeedback.classList.remove('hidden', 'text-[#17657A]', 'text-[#E76F51]');
+                if (correctCount === mathInputs.length) {
+                    mathFeedback.textContent = "Perfect calculations! Well done.";
+                    mathFeedback.classList.add('text-[#17657A]');
+                } else {
+                    mathFeedback.textContent = `You got ${correctCount} out of ${mathInputs.length} correct. Check your math and try again!`;
+                    mathFeedback.classList.add('text-[#E76F51]');
+                }
+            });
+
+            // --- Logic for Multiple Quizzes (Part 4 and Part 6) ---
+            const quizBlocks = document.querySelectorAll('.quiz-block');
+            
+            quizBlocks.forEach(block => {
+                const questions = block.querySelectorAll('.quiz-question');
+                const submitBtn = block.querySelector('.submit-quiz-btn');
+                const resultsDiv = block.querySelector('.quiz-results');
+
+                // Handle option selection inside this specific block
+                questions.forEach(question => {
+                    const options = question.querySelectorAll('.quiz-option');
+                    options.forEach(option => {
+                        option.addEventListener('click', () => {
+                            options.forEach(opt => opt.classList.remove('selected'));
+                            option.classList.add('selected');
+                        });
+                    });
+                });
+
+                // Handle submission for this specific block
+                submitBtn.addEventListener('click', () => {
+                    let score = 0;
+                    let allAnswered = true;
+
+                    questions.forEach(question => {
+                        const correctAns = question.getAttribute('data-correct');
+                        const options = question.querySelectorAll('.quiz-option');
+                        let answered = false;
+
+                        options.forEach(option => {
+                            option.classList.remove('correct-answer', 'wrong-answer');
+                            
+                            if (option.classList.contains('selected')) {
+                                answered = true;
+                                const selectedVal = option.getAttribute('data-val');
+                                if (selectedVal === correctAns) {
+                                    option.classList.add('correct-answer');
+                                    score++;
+                                } else {
+                                    option.classList.add('wrong-answer');
+                                }
+                            }
+                            if (option.getAttribute('data-val') === correctAns && answered) {
+                                option.classList.add('correct-answer');
+                            }
+                        });
+
+                        if (!answered) allAnswered = false;
+                    });
+
+                    if (!allAnswered) {
+                        alert("Please select an answer for all questions before submitting.");
+                        return;
+                    }
+
+                    resultsDiv.className = 'quiz-results mt-4 p-4 rounded-lg text-center font-bold text-xl text-[#123B4A]';
+                    resultsDiv.textContent = `You scored ${score} out of ${questions.length}!`;
+
+                    if (score === questions.length) {
+                        resultsDiv.classList.add('bg-[#F3F7D9]'); // Pale Green
+                    } else if (score > 0) {
+                        resultsDiv.classList.add('bg-[#F4B942]/20'); // Pale Amber
+                    } else {
+                        resultsDiv.classList.add('bg-[#E76F51]/20'); // Pale Coral
+                    }
+                    
+                    submitBtn.disabled = true;
+                    submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    submitBtn.textContent = "Quiz Submitted";
+                });
+            });
+
+
+            // --- Logic for Drag and Drop Matching ---
+            const matchData = [
+                { word: "Diffusion", def: "Movement of particles or molecules from an area of high concentration to an area of low concentration" },
+                { word: "Selectively permeable membrane", def: "A membrane that allows certain materials to pass through, but not others" },
+                { word: "Equilibrium", def: "When there is a relatively equal distribution of a particular molecule" },
+                { word: "Solute", def: "A substance that is dissolved in a solution" },
+                { word: "Solvent", def: "The liquid that contains the dissolved solute in a solution." },
+                { word: "Passive", def: "A process that does not require energy from the cell" },
+                { word: "Concentration gradient", def: "A difference in the concentration of a substance from one location to another" },
+                { word: "Diffusion Distance", def: "The distance that substances must diffuse. The smaller the diffusion distance, the faster the rate of diffusion." },
+                { word: "Surface area to volume ratio", def: "The ratio of a cell's outside area, compared to its internal volume." },
+                { word: "Surface area", def: "The measurement of the outer surface of an object." },
+                { word: "Metabolism", def: "All of the chemical reactions that occur within a cell or organism" },
+                { word: "Dilute", def: "A solution with a small amount of solute" },
+                { word: "Concentrated", def: "A solution with a large amount of solute" },
+                { word: "Temperature", def: "Increased temperature gives molecules more kinetic energy, so diffusion happens faster" },
+                { word: "Kinetic Energy", def: "the energy a molecule has due to its motion" }
+            ];
+
+            const keywordsContainer = document.getElementById('keywords-container');
+            const definitionsContainer = document.getElementById('definitions-container');
+
+            // Shuffle array function
+            function shuffle(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            // Create Draggable Items
+            const shuffledWords = shuffle([...matchData]);
+            shuffledWords.forEach(item => {
+                const dragDiv = document.createElement('div');
+                dragDiv.className = 'bg-[#E8F7FA] border border-[#00AFD7] text-[#17657A] font-semibold p-3 rounded cursor-move text-center shadow-sm select-none transition-transform w-full flex-1 flex items-center justify-center';
+                dragDiv.textContent = item.word;
+                dragDiv.draggable = true;
+                dragDiv.id = 'word-' + item.word.replace(/\s+/g, '-');
+                dragDiv.dataset.word = item.word;
+                
+                dragDiv.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', dragDiv.id);
+                    setTimeout(() => dragDiv.classList.add('opacity-50'), 0);
+                });
+                
+                dragDiv.addEventListener('dragend', () => {
+                    dragDiv.classList.remove('opacity-50');
+                });
+                
+                keywordsContainer.appendChild(dragDiv);
+            });
+
+            // Create Drop Zones and Definitions
+            const shuffledDefs = shuffle([...matchData]);
+            shuffledDefs.forEach(item => {
+                const containerDiv = document.createElement('div');
+                containerDiv.className = 'flex items-center gap-4 bg-[#F8FAFA] p-2 rounded border border-[#DCE5E7] flex-1';
+                
+                const dropZone = document.createElement('div');
+                dropZone.className = 'w-48 h-12 border-2 border-dashed border-[#60747A] rounded bg-white flex items-center justify-center text-sm text-[#60747A] shrink-0 transition-colors';
+                dropZone.textContent = "Drop word here";
+                dropZone.dataset.match = item.word;
+                
+                dropZone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    if(!dropZone.hasChildNodes() || dropZone.childNodes[0].nodeType === 3) {
+                        dropZone.classList.add('bg-[#E8F7FA]', 'border-[#00AFD7]');
+                    }
+                });
+                
+                dropZone.addEventListener('dragleave', () => {
+                    dropZone.classList.remove('bg-[#E8F7FA]', 'border-[#00AFD7]');
+                });
+                
+                dropZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    dropZone.classList.remove('bg-[#E8F7FA]', 'border-[#00AFD7]');
+                    
+                    const draggedId = e.dataTransfer.getData('text/plain');
+                    const draggedElement = document.getElementById(draggedId);
+                    
+                    if (!draggedElement) return;
+
+                    const expectedWord = dropZone.dataset.match;
+                    const draggedWord = draggedElement.dataset.word;
+
+                    if (expectedWord === draggedWord) {
+                        // Success
+                        dropZone.textContent = ''; 
+                        dropZone.appendChild(draggedElement);
+                        draggedElement.classList.remove('cursor-move', 'flex-1');
+                        draggedElement.draggable = false;
+                        
+                        draggedElement.className = 'w-full h-full bg-[#F3F7D9] text-[#17657A] font-semibold p-2 rounded flex items-center justify-center text-center text-sm';
+                        dropZone.classList.remove('border-dashed', 'border-[#60747A]');
+                        dropZone.classList.add('border-solid', 'border-[#C4D600]', 'bg-[#F3F7D9]');
+                        containerDiv.classList.add('bg-[#F3F7D9]', 'border-[#C4D600]');
+                        
+                        containerDiv.style.borderLeftWidth = '4px';
+                        containerDiv.style.borderLeftColor = '#C4D600';
+
+                    } else {
+                        // Fail - visual warning
+                        const originalBg = draggedElement.className;
+                        draggedElement.classList.add('bg-[#E76F51]', 'text-white');
+                        
+                        // Shake effect
+                        draggedElement.style.transform = 'translateX(10px)';
+                        setTimeout(() => draggedElement.style.transform = 'translateX(-10px)', 100);
+                        setTimeout(() => draggedElement.style.transform = 'translateX(10px)', 200);
+                        setTimeout(() => {
+                            draggedElement.style.transform = 'translateX(0)';
+                            draggedElement.className = originalBg;
+                        }, 300);
+                    }
+                });
+                
+                const defP = document.createElement('p');
+                defP.className = 'text-[#60747A] flex-1 text-sm md:text-base';
+                defP.textContent = item.def;
+                
+                containerDiv.appendChild(dropZone);
+                containerDiv.appendChild(defP);
+                definitionsContainer.appendChild(containerDiv);
+            });
+
+        });
+    </script>
+</body>
+</html>
