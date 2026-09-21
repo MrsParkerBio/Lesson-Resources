@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Title on the browser tab -->
+    <title>Mrs Parker's Biology Resources</title>
+    
+    <!-- Pulls in Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Sets up your specific color palette -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        offwhite: '#F8FAFA',
+                        navy: '#123B4A',
+                        coolgrey: '#60747A',
+                        nexusblue: '#00AFD7',
+                        darkteal: '#17657A',
+                        correct: '#C4D600',
+                        incorrect: '#E76F51',
+                        warning: '#F4B942',
+                        subtleborder: '#DCE5E7'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS for base background and font -->
+    <style>
+        body {
+            background-color: #F8FAFA; 
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+    </style>
+</head>
+<body class="p-8">
+
+    <!-- Main White Container -->
+    <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-sm border border-subtleborder p-8">
+        
+        <!-- Header Text -->
+        <h1 class="text-3xl font-bold text-navy mb-2">Mrs Parker's Biology Resources</h1>
+        <p class="text-coolgrey mb-8">Select a curriculum section below to access your lesson materials and interactive labs.</p>
+
+        <!-- IGCSE SECTION -->
+        <!-- The border-b adds a thin line under the section title to keep things organized -->
+        <h2 class="text-2xl font-bold text-navy mb-4 border-b border-subtleborder pb-2">IGCSE</h2>
+        
+        <!-- IGCSE Links (The mb-10 adds space before the next section starts) -->
+        <div class="space-y-4 mb-10">
+            
+            <a href="IGCSE_Diffusion_Theory.html" class="block p-5 rounded-lg border border-subtleborder hover:border-nexusblue hover:shadow-md transition-all group">
+                <h3 class="text-xl font-bold text-darkteal group-hover:text-nexusblue">Diffusion Theory</h3>
+                <p class="text-coolgrey mt-1">A lesson to understand the concept of diffusion, the importance of surface area and explore the other factors that affect the rate of diffusion in cells.</p>
+            </a>
+
+        </div>
+
+        <!-- IBDP SECTION -->
+        <h2 class="text-2xl font-bold text-navy mb-4 border-b border-subtleborder pb-2">IBDP</h2>
+        
+        <!-- IBDP Links -->
+        <div class="space-y-4">
+            
+            <a href="colorimetry_interactive_lab.html" class="block p-5 rounded-lg border border-subtleborder hover:border-nexusblue hover:shadow-md transition-all group">
+                <h3 class="text-xl font-bold text-darkteal group-hover:text-nexusblue">Colorimetry Interactive Lab</h3>
+                <p class="text-coolgrey mt-1">An interactive lab, to accompany the beetroot diffusion experiment, and explore how we can analyse and evaluate practicals.</p>
+            </a>
+
+        </div>
+    </div>
+
+</body>
+</html>
