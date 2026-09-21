@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Lab Companion: Colorimetry & Data Analysis</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'off-white': '#F8FAFA',
+                        'deep-navy': '#123B4A',
+                        'cool-grey': '#60747A',
+                        'nexus-blue': '#00AFD7',
+                        'dark-teal': '#17657A',
+                        'nexus-green': '#C4D600',
+                        'coral': '#E76F51',
+                        'amber': '#F4B942',
+                        'border-grey': '#DCE5E7'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom CSS for specific interactive behaviors */
+        body {
+            background-color: #F8FAFA;
+            color: #123B4A;
+        }
+        
+        .fib-input {
+            border: none;
+            border-bottom: 2px solid #123B4A;
+            background: transparent;
+            text-align: center;
+            font-weight: 600;
+            color: #00AFD7;
+            width: auto;
+            min-width: 100px;
+            padding: 0 4px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .fib-input:focus {
+            border-bottom-color: #00AFD7;
+        }
+
+        .fib-input.correct {
+            border-bottom-color: #C4D600;
+            color: #798500;
+        }
+
+        .fib-input.incorrect {
+            border-bottom-color: #E76F51;
+            color: #E76F51;
+        }
+
+        /* Drag and Drop Styles */
+        .draggable {
+            cursor: grab;
+            user-select: none;
+        }
+        
+        .draggable:active {
+            cursor: grabbing;
+        }
+
+        .drop-zone {
+            min-height: 48px;
+            border: 2px dashed #DCE5E7;
+            transition: all 0.2s;
+        }
+        
+        .drop-zone.drag-over {
+            background-color: rgba(0, 175, 215, 0.1);
+            border-color: #00AFD7;
+        }
+
+        .drop-zone.correct-drop {
+            border: 2px solid #C4D600;
+            background-color: rgba(196, 214, 0, 0.1);
+        }
+
+        /* Shake Animation for incorrect drops */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+        .shake-animation {
+            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+            border-color: #E76F51 !important;
+            background-color: rgba(231, 111, 81, 0.1) !important;
+        }
+
+        /* MCQ Options */
+        .mcq-option {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .mcq-option:hover {
+            border-color: #00AFD7;
+            background-color: rgba(0, 175, 215, 0.05);
+        }
+        .mcq-option.selected {
+            border-color: #00AFD7;
+            background-color: rgba(0, 175, 215, 0.1);
+            box-shadow: 0 0 0 1px #00AFD7;
+        }
+        .mcq-option.correct {
+            border-color: #C4D600;
+            background-color: rgba(196, 214, 0, 0.1);
+        }
+        .mcq-option.incorrect {
+            border-color: #E76F51;
+            background-color: rgba(231, 111, 81, 0.1);
+        }
+
+        /* Select styling for the new table */
+        select {
+            appearance: none;
+            background-color: #F8FAFA;
+            border: 1px solid #DCE5E7;
+            border-radius: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            color: #123B4A;
+            font-weight: 500;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s;
+        }
+        select:focus {
+            border-color: #00AFD7;
+            box-shadow: 0 0 0 1px #00AFD7;
+        }
+        select.correct {
+            border-color: #C4D600;
+            background-color: rgba(196, 214, 0, 0.1);
+            color: #798500;
+        }
+        select.incorrect {
+            border-color: #E76F51;
+            background-color: rgba(231, 111, 81, 0.1);
+            color: #E76F51;
+        }
+
+        /* Styles for the new evaluation buttons */
+        .opt-btn {
+            transition: all 0.2s ease;
+        }
+        .opt-btn.selected {
+            border-color: #00AFD7;
+            background-color: rgba(0, 175, 215, 0.1);
+            box-shadow: 0 0 0 1px #00AFD7;
+        }
+        .opt-btn.correct-btn {
+            border-color: #C4D600 !important;
+            background-color: rgba(196, 214, 0, 0.1) !important;
+            box-shadow: 0 0 0 1px #C4D600 !important;
+        }
+        .opt-btn.incorrect-btn {
+            border-color: #E76F51 !important;
+            background-color: rgba(231, 111, 81, 0.1) !important;
+            box-shadow: 0 0 0 1px #E76F51 !important;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-5xl mx-auto space-y-8">
+
+        <!-- Header & Learning Objectives -->
+        <header class="bg-white p-6 rounded-xl shadow-sm border border-border-grey">
+            <h1 class="text-3xl font-bold text-deep-navy mb-2">IBDP Biology: Interactive Lab Companion</h1>
+            <h2 class="text-xl text-cool-grey mb-6">Colorimetry, Error Analysis & Data Evaluation</h2>
+            
+            <div class="bg-blue-50 border-l-4 border-nexus-blue p-4 rounded-r-lg">
+                <h3 class="font-bold text-dark-teal mb-2">🎯 Learning Objectives</h3>
+                <ul class="list-disc pl-5 text-deep-navy space-y-1">
+                    <li>Understand the underlying science of how a colorimeter works and what the results indicate.</li>
+                    <li>Differentiate between absorbance and transmission.</li>
+                    <li>Interpret mean values and uncertainty from experimental data.</li>
+                    <li>Evaluate experiments in terms of reliability, accuracy, precision, and types of error (systematic vs. random).</li>
+                </ul>
+            </div>
+        </header>
+
+        <!-- Section 1: The Colorimeter -->
+        <section class="bg-white p-6 rounded-xl shadow-sm border border-border-grey">
+            <h2 class="text-2xl font-bold mb-4 border-l-4 border-nexus-blue pl-3">Part 1: The Science of the Colorimeter</h2>
+            
+            <!-- Landscape Image (beetroot.png) -->
+            <img src="beetroot.png" alt="Beetroot Pigment Leakage Diagram" class="w-full h-auto max-h-[400px] object-contain bg-off-white rounded-lg border border-border-grey mb-6 shadow-sm" onerror="this.onerror=null; this.src='https://placehold.co/1200x400/F8FAFA/123B4A?text=Beetroot+Pigment+Leakage+(beetroot.png)'">
+            
+            <div class="mb-6">
+                <!-- Biological Context -->
+                <div class="bg-off-white p-5 rounded-lg border border-border-grey mb-4" id="fib-container-bio">
+                    <p class="leading-loose">
+                        Beetroot cells contain a dark purple-red pigment called betalain, which is safely stored inside the cell's <input type="text" class="fib-input" data-answer="vacuole">. 
+                        To leave the cell, this pigment must pass through the tonoplast and the cell membrane, which are primarily composed of a <input type="text" class="fib-input" data-answer="phospholipid|phospholipid bilayer"> bilayer. 
+                        As temperature increases, the molecules gain kinetic energy, causing the membrane to increase in <input type="text" class="fib-input" data-answer="fluidity">. High temperatures eventually damage the membrane and denature its proteins, allowing the pigment to leak out.
+                    </p>
+                    <div class="mt-4 flex items-center justify-between">
+                        <button class="bg-nexus-blue hover:bg-dark-teal text-white font-semibold py-2 px-4 rounded transition-colors" onclick="checkFIB('fib-container-bio')">
+                            Check Answers
+                        </button>
+                        <span id="fib-feedback-bio" class="font-semibold"></span>
+                    </div>
+                </div>
+
+                <!-- Landscape Image (colorimeter.png) -->
+                <img src="colorimeter.png" alt="Colorimeter Diagram" class="w-full h-auto max-h-[400px] object-contain bg-off-white rounded-lg border border-border-grey mb-4 shadow-sm" onerror="this.onerror=null; this.src='https://placehold.co/1200x400/F8FAFA/123B4A?text=Colorimeter+Diagram+(colorimeter.png)'">
+
+                <p class="text-cool-grey mb-4">
+                    Now that we know why the pigment leaks, let's review how we measure it. A colorimeter measures the intensity of light passing through a liquid. 
+                </p>
+                
+                <!-- Colorimeter Context -->
+                <div class="bg-off-white p-5 rounded-lg border border-border-grey" id="fib-container-1">
+                    <p class="leading-loose">
+                        In your protocol, the colorimeter is set to a 530 nm (blue/green) filter. A light beam passes through the sample <input type="text" class="fib-input" data-answer="cuvette|liquid|solution">. 
+                        The amount of light that successfully passes through the solution is known as <input type="text" class="fib-input" data-answer="transmission">, 
+                        while the light that is taken up by the solution is called <input type="text" class="fib-input" data-answer="absorbance">. 
+                        If you use a hotter water bath, more pigment leaks. Therefore, the transmission value will <input type="text" class="fib-input" data-answer="decrease|be low|lower">.
+                        Before taking measurements, you must recalibrate (zero) the machine between each sample using a <input type="text" class="fib-input" data-answer="blank"> of distilled water.
+                    </p>
+                    <div class="mt-4 flex items-center justify-between">
+                        <button class="bg-nexus-blue hover:bg-dark-teal text-white font-semibold py-2 px-4 rounded transition-colors" onclick="checkFIB('fib-container-1')">
+                            Check Answers
+                        </button>
+                        <span id="fib-feedback-1" class="font-semibold"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Misconception Alert -->
+            <div class="bg-amber/10 border-l-4 border-amber p-4 rounded-r-lg flex gap-3">
+                <div class="text-amber text-2xl">⚠️</div>
+                <div>
+                    <h4 class="font-bold text-deep-navy mb-1">Common Misconception</h4>
+                    <p class="text-sm text-deep-navy">
+                        Students often think a "blank" cuvette used for calibration should just be an empty cuvette. <strong>False!</strong> 
+                        A blank must contain everything <em>except</em> the specific substance you are measuring (e.g., the solvent or buffer). This cancels out the light absorbance of the glass, the water, and any other background reagents.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Data Analysis & Math -->
+        <section class="bg-white p-6 rounded-xl shadow-sm border border-border-grey">
+            <h2 class="text-2xl font-bold mb-4 border-l-4 border-nexus-blue pl-3">Part 2: Reliability, Uncertainty & Standard Deviation</h2>
+            
+            <div class="bg-blue-50 border-l-4 border-nexus-blue p-4 mb-6 rounded-r-lg">
+                <h3 class="font-bold text-dark-teal mb-2">📊 What is Standard Deviation?</h3>
+                <p class="text-sm text-deep-navy mb-2">
+                    In this experiment, you don't just calculate the mean; you need to evaluate how spread out your data is. 
+                    <strong>Standard Deviation (SD)</strong> is a measure of this spread. 
+                </p>
+                <ul class="list-disc pl-5 text-sm text-deep-navy space-y-1">
+                    <li>A <strong>low SD</strong> means your data points are clustered closely around the mean (high precision, low uncertainty).</li>
+                    <li>A <strong>high SD</strong> means your data points are widely spread out (low precision, high uncertainty).</li>
+                </ul>
+                <p class="text-sm text-deep-navy mt-2 italic">
+                    Note: You will not need to calculate this by hand! In Google Sheets, you will simply use the formula <code>=STDEV()</code>.
+                </p>
+            </div>
+
+            <p class="text-cool-grey mb-4">
+                Review the model transmission data below. Notice how the number of trials varies for each temperature. 
+            </p>
+
+            <div class="overflow-x-auto mb-8">
+                <table class="w-full text-left border-collapse min-w-[600px]">
+                    <thead>
+                        <tr class="bg-off-white border-b-2 border-border-grey text-sm">
+                            <th class="p-3">Temp (°C)</th>
+                            <th class="p-3">T1</th>
+                            <th class="p-3">T2</th>
+                            <th class="p-3">T3</th>
+                            <th class="p-3">T4</th>
+                            <th class="p-3">T5</th>
+                            <th class="p-3">Repeats</th>
+                            <th class="p-3">Mean (%)</th>
+                            <th class="p-3">SD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-border-grey">
+                            <td class="p-3 font-semibold">20</td>
+                            <td class="p-3">81</td>
+                            <td class="p-3">83</td>
+                            <td class="p-3 text-gray-300">-</td>
+                            <td class="p-3 text-gray-300">-</td>
+                            <td class="p-3 text-gray-300">-</td>
+                            <td class="p-3 font-semibold text-cool-grey">2</td>
+                            <td class="p-3 font-bold">82.0</td>
+                            <td class="p-3 text-nexus-blue font-bold">1.41</td>
+                        </tr>
+                        <tr class="border-b border-border-grey bg-gray-50">
+                            <td class="p-3 font-semibold">50</td>
+                            <td class="p-3">45</td>
+                            <td class="p-3">46</td>
+                            <td class="p-3">45</td>
+                            <td class="p-3">45</td>
+                            <td class="p-3">44</td>
+                            <td class="p-3 font-semibold text-cool-grey">5</td>
+                            <td class="p-3 font-bold">45.0</td>
+                            <td class="p-3 text-nexus-blue font-bold">0.71</td>
+                        </tr>
+                        <tr class="border-b border-border-grey">
+                            <td class="p-3 font-semibold">70</td>
+                            <td class="p-3">10</td>
+                            <td class="p-3">24</td>
+                            <td class="p-3">18</td>
+                            <td class="p-3 text-gray-300">-</td>
+                            <td class="p-3 text-gray-300">-</td>
+                            <td class="p-3 font-semibold text-cool-grey">3</td>
+                            <td class="p-3 font-bold">17.3</td>
+                            <td class="p-3 text-nexus-blue font-bold">7.02</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Question 1 -->
+            <div class="mcq-group mb-8" id="mcq-part2-1">
+                <p class="font-semibold mb-3">1. Based on the data above, which temperature's mean average is the most <span class="text-nexus-blue">reliable</span>?</p>
+                <div class="space-y-2 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="mcq-option p-4 border rounded-lg bg-off-white mt-2" data-correct="false" data-feedback="Incorrect. The 20°C bath only has 2 trials. To improve the reliability of a mean, you need more repeats." onclick="selectOption(this)">20°C</div>
+                    <div class="mcq-option p-4 border rounded-lg bg-off-white" data-correct="true" data-feedback="Correct! 50°C has 5 trials. More repeats equates to more reliability, as random errors have less impact on the final mean." onclick="selectOption(this)">50°C</div>
+                    <div class="mcq-option p-4 border rounded-lg bg-off-white" data-correct="false" data-feedback="Incorrect. Look at the 'Repeats (Trials)' column. Which temperature has the most repeats?" onclick="selectOption(this)">70°C</div>
+                </div>
+                <div class="mt-4 flex items-start flex-col gap-2">
+                    <button class="bg-nexus-blue hover:bg-dark-teal text-white font-semibold py-2 px-4 rounded transition-colors mcq-submit" onclick="submitMCQ('mcq-part2-1')">Check Answer</button>
+                    <span class="mcq-feedback font-semibold text-sm"></span>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="mcq-group" id="mcq-part2-2">
+                <p class="font-semibold mb-3">2. Based on the Standard Deviation, which temperature's data has the highest <span class="text-nexus-blue">uncertainty</span> (lowest precision)?</p>
+                <div class="space-y-2 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="mcq-option p-4 border rounded-lg bg-off-white mt-2" data-correct="false" data-feedback="Incorrect. This has a relatively low SD. Look for the highest Standard Deviation value." onclick="selectOption(this)">20°C</div>
+                    <div class="mcq-option p-4 border rounded-lg bg-off-white" data-correct="false" data-feedback="Incorrect. This actually has the LOWEST uncertainty because the SD (0.71) is the smallest." onclick="selectOption(this)">50°C</div>
+                    <div class="mcq-option p-4 border rounded-lg bg-off-white" data-correct="true" data-feedback="Correct! A high SD (7.02) means the data points are very spread out around the mean, indicating high uncertainty." onclick="selectOption(this)">70°C</div>
+                </div>
+                <div class="mt-4 flex items-start flex-col gap-2">
+                    <button class="bg-nexus-blue hover:bg-dark-teal text-white font-semibold py-2 px-4 rounded transition-colors mcq-submit" onclick="submitMCQ('mcq-part2-2')">Check Answer</button>
+                    <span class="mcq-feedback font-semibold text-sm"></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Data Evaluation Terminology -->
+        <section class="bg-white p-6 rounded-xl shadow-sm border border-border-grey">
+            <h2 class="text-2xl font-bold mb-4 border-l-4 border-nexus-blue pl-3">Part 3: Data Evaluation Terminology</h2>
+            
+            <p class="text-cool-grey mb-4">Before evaluating your specific experiment, let's review key data terminology using the classic <strong>dartboard analogy</strong>. Imagine the "bullseye" is the true, accepted value you are trying to measure (e.g., the exact percentage of actual pigment leakage).</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <!-- Accurate & Precise -->
+                <div class="bg-off-white p-5 rounded-lg border border-border-grey flex flex-col items-center text-center shadow-sm">
+                    <div class="text-5xl mb-3">🎯</div>
+                    <h4 class="font-bold text-deep-navy">Accurate & Precise</h4>
+                    <p class="text-sm text-cool-grey mt-2">All darts are tightly clustered right in the bullseye. Your measurements are very close to the true value (high accuracy) and very consistent with each other (high precision).</p>
+                </div>
+                <!-- Precise but Inaccurate -->
+                <div class="bg-off-white p-5 rounded-lg border border-border-grey flex flex-col items-center text-center shadow-sm">
+                    <div class="text-5xl mb-3">🏹</div>
+                    <h4 class="font-bold text-deep-navy">Precise, NOT Accurate</h4>
+                    <p class="text-sm text-cool-grey mt-2">All darts are tightly clustered together, but far from the bullseye. This indicates a <strong>Systematic Error</strong> (e.g., a poorly calibrated colorimeter that shifts all data equally in one direction).</p>
+                </div>
+                <!-- Inaccurate & Imprecise -->
+                <div class="bg-off-white p-5 rounded-lg border border-border-grey flex flex-col items-center text-center shadow-sm">
+                    <div class="text-5xl mb-3">💨</div>
+                    <h4 class="font-bold text-deep-navy">Low Precision & Reliability</h4>
+                    <p class="text-sm text-cool-grey mt-2">Darts are scattered randomly across the board. This indicates high <strong>Random Error</strong>. You need more repeats to calculate a reliable mean average.</p>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-bold mb-4 text-dark-teal border-b-2 border-border-grey pb-2">Terminology Match</h3>
+            <p class="text-cool-grey mb-6">Now, put it all together! Drag the correct word from the bank and drop it into the zone next to its definition.</p>
+
+            <div class="flex flex-col md:flex-row gap-8">
+                <!-- Word Bank -->
+                <div class="md:w-1/3 bg-off-white p-4 rounded-lg border border-border-grey">
+                    <h3 class="font-bold text-center mb-4 text-dark-teal">Word Bank</h3>
+                    <div class="space-y-3" id="word-bank">
+                        <div class="draggable bg-white border-2 border-nexus-blue text-center py-2 rounded shadow-sm text-nexus-blue font-semibold" draggable="true" id="term-accuracy" data-keyword="accuracy">Accuracy</div>
+                        <div class="draggable bg-white border-2 border-nexus-blue text-center py-2 rounded shadow-sm text-nexus-blue font-semibold" draggable="true" id="term-precision" data-keyword="precision">Precision</div>
+                        <div class="draggable bg-white border-2 border-nexus-blue text-center py-2 rounded shadow-sm text-nexus-blue font-semibold" draggable="true" id="term-reliability" data-keyword="reliability">Reliability</div>
+                        <div class="draggable bg-white border-2 border-nexus-blue text-center py-2 rounded shadow-sm text-nexus-blue font-semibold" draggable="true" id="term-random" data-keyword="random">Random Error</div>
+                        <div class="draggable bg-white border-2 border-nexus-blue text-center py-2 rounded shadow-sm text-nexus-blue font-semibold" draggable="true" id="term-systematic" data-keyword="systematic">Systematic Error</div>
+                        <div class="draggable bg-white border-2 border-nexus-blue text-center py-2 rounded shadow-sm text-nexus-blue font-semibold" draggable="true" id="term-validity" data-keyword="validity">Validity</div>
+                    </div>
+                </div>
+
+                <!-- Definitions -->
+                <div class="md:w-2/3 space-y-4">
+                    <!-- Drop row -->
+                    <div class="flex items-center gap-4">
+                        <div class="drop-zone w-40 rounded flex items-center justify-center p-1 bg-off-white" data-match="validity"></div>
+                        <div class="flex-1 text-sm bg-gray-50 p-3 rounded border border-border-grey">Whether the experiment actually measures what it set out to measure (ensured by controlling variables like core size and time).</div>
+                    </div>
+                    <!-- Drop row -->
+                    <div class="flex items-center gap-4">
+                        <div class="drop-zone w-40 rounded flex items-center justify-center p-1 bg-off-white" data-match="precision"></div>
+                        <div class="flex-1 text-sm bg-gray-50 p-3 rounded border border-border-grey">How close repeated measurements are to each other (e.g., getting very similar % transmission for all three 50°C trials).</div>
+                    </div>
+                    <!-- Drop row -->
+                    <div class="flex items-center gap-4">
+                        <div class="drop-zone w-40 rounded flex items-center justify-center p-1 bg-off-white" data-match="accuracy"></div>
+                        <div class="flex-1 text-sm bg-gray-50 p-3 rounded border border-border-grey">How close a measured value is to the true or accepted standard value.</div>
+                    </div>
+                    <!-- Drop row -->
+                    <div class="flex items-center gap-4">
+                        <div class="drop-zone w-40 rounded flex items-center justify-center p-1 bg-off-white" data-match="reliability"></div>
+                        <div class="flex-1 text-sm bg-gray-50 p-3 rounded border border-border-grey">The overall trustworthiness of the experiment; improved by doing repeats and identifying anomalies.</div>
+                    </div>
+                    <!-- Drop row -->
+                    <div class="flex items-center gap-4">
+                        <div class="drop-zone w-40 rounded flex items-center justify-center p-1 bg-off-white" data-match="systematic"></div>
+                        <div class="flex-1 text-sm bg-gray-50 p-3 rounded border border-border-grey">A consistent flaw (e.g., an improperly zeroed colorimeter) that shifts all data in the same direction, reducing accuracy.</div>
+                    </div>
+                    <!-- Drop row -->
+                    <div class="flex items-center gap-4">
+                        <div class="drop-zone w-40 rounded flex items-center justify-center p-1 bg-off-white" data-match="random"></div>
+                        <div class="flex-1 text-sm bg-gray-50 p-3 rounded border border-border-grey">Unpredictable variations (e.g., slightly different beetroot core sizes) affecting individual measurements; minimized by averaging repeats.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Evaluating the Ideal Investigation -->
+        <section class="bg-white p-6 rounded-xl shadow-sm border border-border-grey">
+            <h2 class="text-2xl font-bold mb-4 border-l-4 border-nexus-blue pl-3">Part 4: Evaluating an Ideal Investigation</h2>
+            <p class="text-cool-grey mb-6">
+                Below are several steps from an experimental design. For each step, select the <strong>better option</strong>, indicate whether it primarily enhances <strong>Validity (V), Reliability (R), or Accuracy (A)</strong>, and then select the correct <strong>justification</strong> for your choice.
+            </p>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse min-w-[1000px]" id="eval-table">
+                    <thead>
+                        <tr class="bg-off-white border-b-2 border-border-grey text-sm text-dark-teal">
+                            <th class="p-3 w-12 text-center">Step</th>
+                            <th class="p-3 w-5/12">Options (Select Best)</th>
+                            <th class="p-3 w-1/6 text-center">Validity / Reliability / Accuracy</th>
+                            <th class="p-3 w-1/3">Justification</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm align-top">
+                        <!-- Step 1 -->
+                        <tr class="border-b border-border-grey eval-row">
+                            <td class="p-3 font-semibold text-center mt-2">1</td>
+                            <td class="p-3">
+                                <div class="grid grid-cols-1 xl:grid-cols-2 gap-2 opt-group" data-answer="2">
+                                    <button class="opt-btn p-3 border border-border-grey rounded text-sm text-left hover:border-nexus-blue bg-white" data-val="1" onclick="selectEvalOption(this)">Use 3 boiling tubes to carry out incubations at 5°C, 40°C and 75°C.</button>
+                                    <button class="opt-btn p-3 border border-border-grey rounded text-sm text-left hover:border-nexus-blue bg-white" data-val="2" onclick="selectEvalOption(this)">Use 6 boiling tubes to carry out incubations at 5°C, 25°C, 40°C, 60°C, 75°C and 90°C.</button>
+                                </div>
+                            </td>
+                            <td class="p-3 text-center">
+                                <select class="w-full text-center font-bold vra-select mt-2" data-answer="Accuracy">
+                                    <option value="" disabled selected>Select...</option>
+                                    <option value="Validity">Validity</option>
+                                    <option value="Reliability">Reliability</option>
+                                    <option value="Accuracy">Accuracy</option>
+                                </select>
+                            </td>
+                            <td class="p-3">
+                                <select class="w-full just-select mt-2" data-answer="A">
+                                    <option value="" disabled selected>Select justification...</option>
+                                    <option value="A">Using a greater range and more intervals of the independent variable will provide data that allows for a more accurate trend to be determined.</option>
+                                    <option value="B">This allows for the water in the boiling tubes to reach the stated temperature before the beetroot is added.</option>
+                                    <option value="C">This will provide three readings from which an anomalous data point may be identified.</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <!-- Step 2 -->
+                        <tr class="border-b border-border-grey bg-gray-50 eval-row">
+                            <td class="p-3 font-semibold text-center mt-2">2</td>
+                            <td class="p-3">
+                                <div class="grid grid-cols-1 xl:grid-cols-2 gap-2 opt-group" data-answer="1">
+                                    <button class="opt-btn p-3 border border-border-grey rounded text-sm text-left hover:border-nexus-blue bg-white" data-val="1" onclick="selectEvalOption(this)">Measure 20 cm³ distilled water into each of the boiling tubes using a 10 cm³ measuring cylinder.</button>
+                                    <button class="opt-btn p-3 border border-border-grey rounded text-sm text-left hover:border-nexus-blue bg-white" data-val="2" onclick="selectEvalOption(this)">Measure 20 cm³ distilled water into each of the boiling tubes using a 50 cm³ measuring cylinder.</button>
+                                </div>
+                            </td>
+                            <td class="p-3 text-center">
+                                <select class="w-full text-center font-bold vra-select mt-2" data-answer="Accuracy">
+                                    <option value="" disabled selected>Select...</option>
+                                    <option value="Validity">Validity</option>
+                                    <option value="Reliability">Reliability</option>
+                                    <option value="Accuracy">Accuracy</option>
+                                </select>
+                            </td>
+                            <td class="p-3">
+                                <select class="w-full just-select mt-2" data-answer="A">
+                                    <option value="" disabled selected>Select justification...</option>
+                                    <option value="B">This ensures that the released pigment is spread consistently throughout the water.</option>
+                                    <option value="A">The precision of a 10 cm³ measuring cylinder is greater than a 50 cm³ cylinder, allowing for a more precise measurement of the water.</option>
+                                    <option value="C">This minimizes mechanical damage to the cells, which may cause further pigment leakage.</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <!-- Step 3 -->
+                        <tr class="border-b border-border-grey eval-row">
+                            <td class="p-3 font-semibold text-center mt-2">3</td>
+                            <td class="p-3">
+                                <div class="grid grid-cols-1 xl:grid-cols-2 gap-2 opt-group" data-answer="2">
+                                    <button class="opt-btn p-3 border border-border-grey rounded text-sm text-left hover:border-nexus-blue bg-white" data-val="1" onclick="selectEvalOption(this)">Place the boiling tubes containing water into the separate water baths immediately.</button>
+                                    <button class="opt-btn p-3 border border-border-grey rounded text-sm text-left hover:border-nexus-blue bg-white" data-val="2" onclick="selectEvalOption(this)">Wait until the beetroot pieces have been prepared before placing the boiling tubes containing water into the water baths.</button>
+                                </div>
+                            </td>
+                            <td class="p-3 text-center">
+                                <select class="w-full text-center font-bold vra-select mt-2" data-answer="Validity">
+                                    <option value="" disabled selected>Select...</option>
+                                    <option value="Validity">Validity</option>
+                                    <option value="Reliability">Reliability</option>
+                                    <option value="Accuracy">Accuracy</option>
+                                </select>
+                            </td>
+                            <td class="p-3">
+                                <select class="w-full just-select mt-2" data-answer="A">
+                                    <option value="" disabled selected>Select justification...</option>
+                                    <option value="A">This allows for the water in the boiling tubes to reach the stated temperature before the beetroot is added.</option>
+                                    <option value="B">This removes any pigment that remains on the surface of the beetroot pieces.</option>
+                                    <option value="C">This is necessary to provide a baseline reading against which all absorbance readings are calibrated.</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <!-- Step 4 (Original Step 5) -->
+                        <tr class="border-b border-border-grey bg-gray-50 eval-row">
+                            <td class="p-3 font-semibold text-center mt-2">4</td>
+                            <td class="p-3">
+                                <div class="grid grid-cols-1 xl:grid-cols-2 gap-2 opt-group" data-answer="1">
+                                    <button class="opt-btn p-3 border border-border-grey rounded text-sm text-left hover:border-nexus-blue bg-white" data-val="1" onclick="selectEvalOption(this)">Use a cork borer to obtain 6 cylinders of beetroot, and then trim them to the same length with a sharp knife.</button>
+                                    <button class="opt-btn p-3 border border-border-grey rounded text-sm text-left hover:border-nexus-blue bg-white" data-val="2" onclick="selectEvalOption(this)">Use a sharp knife to cut 6 cubes of beetroot.</button>
+                                </div>
+                            </td>
+                            <td class="p-3 text-center">
+                                <select class="w-full text-center font-bold vra-select mt-2" data-answer="Validity">
+                                    <option value="" disabled selected>Select...</option>
+                                    <option value="Validity">Validity</option>
+                                    <option value="Reliability">Reliability</option>
+                                    <option value="Accuracy">Accuracy</option>
+                                </select>
+                            </td>
+                            <td class="p-3">
+                                <select class="w-full just-select mt-2" data-answer="A">
+                                    <option value="" disabled selected>Select justification...</option>
+                                    <option value="A">This increases the likelihood that the diameter of the different beetroot pieces is uniform, which is a factor that needs to be controlled.</option>
+                                    <option value="B">This removes subjectivity and bias from recording the results.</option>
+                                    <option value="C">This ensures that the beetroot pieces do not dehydrate.</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <!-- Step 5 (Original Step 8) -->
+                        <tr class="border-b border-border-grey eval-row">
+                            <td class="p-3 font-semibold text-center mt-2">5</td>
+                            <td class="p-3">
+                                <div class="grid grid-cols-1 xl:grid-cols-2 gap-2 opt-group" data-answer="1">
+                                    <button class="opt-btn p-3 border border-border-grey rounded text-sm text-left hover:border-nexus-blue bg-white" data-val="1" onclick="selectEvalOption(this)">Dry the beetroot pieces using a paper towel.</button>
+                                    <button class="opt-btn p-3 border border-border-grey rounded text-sm text-left hover:border-nexus-blue bg-white" data-val="2" onclick="selectEvalOption(this)">Leave the beetroot pieces exposed to the air to dry for 10-20 minutes.</button>
+                                </div>
+                            </td>
+                            <td class="p-3 text-center">
+                                <select class="w-full text-center font-bold vra-select mt-2" data-answer="Accuracy">
+                                    <option value="" disabled selected>Select...</option>
+                                    <option value="Validity">Validity</option>
+                                    <option value="Reliability">Reliability</option>
+                                    <option value="Accuracy">Accuracy</option>
+                                </select>
+                            </td>
+                            <td class="p-3">
+                                <select class="w-full just-select mt-2" data-answer="A">
+                                    <option value="" disabled selected>Select justification...</option>
+                                    <option value="A">This ensures that the beetroot pieces do not dehydrate and form an impermeable layer that could interfere with the experiment.</option>
+                                    <option value="B">This removes any pigment that remains on the surface of the beetroot pieces.</option>
+                                    <option value="C">This is necessary to provide a baseline reading against which all absorbance readings are calibrated.</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <!-- Step 6 (Original Step 9) -->
+                        <tr class="border-b border-border-grey bg-gray-50 eval-row">
+                            <td class="p-3 font-semibold text-center mt-2">6</td>
+                            <td class="p-3">
+                                <div class="grid grid-cols-1 xl:grid-cols-2 gap-2 opt-group" data-answer="2">
+                                    <button class="opt-btn p-3 border border-border-grey rounded text-sm text-left hover:border-nexus-blue bg-white" data-val="1" onclick="selectEvalOption(this)">Place the beetroot into the boiling tubes, containing water, wait 5 minutes, and then start a stop clock.</button>
+                                    <button class="opt-btn p-3 border border-border-grey rounded text-sm text-left hover:border-nexus-blue bg-white" data-val="2" onclick="selectEvalOption(this)">Place the beetroot into the boiling tubes, containing water, and start a stop clock immediately.</button>
+                                </div>
+                            </td>
+                            <td class="p-3 text-center">
+                                <select class="w-full text-center font-bold vra-select mt-2" data-answer="Accuracy">
+                                    <option value="" disabled selected>Select...</option>
+                                    <option value="Validity">Validity</option>
+                                    <option value="Reliability">Reliability</option>
+                                    <option value="Accuracy">Accuracy</option>
+                                </select>
+                            </td>
+                            <td class="p-3">
+                                <select class="w-full just-select mt-2" data-answer="A">
+                                    <option value="" disabled selected>Select justification...</option>
+                                    <option value="A">Pigment may be released immediately, so this ensures that all pigment released is accounted for in the results.</option>
+                                    <option value="B">This minimizes mechanical damage to the cells.</option>
+                                    <option value="C">This allows for the beetroot pieces to reach the temperature of the water.</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <!-- Step 7 (Original Step 12) -->
+                        <tr class="border-b border-border-grey eval-row">
+                            <td class="p-3 font-semibold text-center mt-2">7</td>
+                            <td class="p-3">
+                                <div class="grid grid-cols-1 xl:grid-cols-2 gap-2 opt-group" data-answer="1">
+                                    <button class="opt-btn p-3 border border-border-grey rounded text-sm text-left hover:border-nexus-blue bg-white" data-val="1" onclick="selectEvalOption(this)">Gently shake the boiling tubes upon removing them from the water baths.</button>
+                                    <button class="opt-btn p-3 border border-border-grey rounded text-sm text-left hover:border-nexus-blue bg-white" data-val="2" onclick="selectEvalOption(this)">Be careful not to agitate the boiling tubes upon removing them from the water baths.</button>
+                                </div>
+                            </td>
+                            <td class="p-3 text-center">
+                                <select class="w-full text-center font-bold vra-select mt-2" data-answer="Accuracy">
+                                    <option value="" disabled selected>Select...</option>
+                                    <option value="Validity">Validity</option>
+                                    <option value="Reliability">Reliability</option>
+                                    <option value="Accuracy">Accuracy</option>
+                                </select>
+                            </td>
+                            <td class="p-3">
+                                <select class="w-full just-select mt-2" data-answer="A">
+                                    <option value="" disabled selected>Select justification...</option>
+                                    <option value="B">This removes subjectivity and bias from recording the results.</option>
+                                    <option value="A">This ensures that the released pigment is spread consistently throughout the water.</option>
+                                    <option value="C">This minimizes mechanical damage to the cells, which may cause further pigment leakage.</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <!-- Step 8 (Original Step 16) -->
+                        <tr class="border-b border-border-grey bg-gray-50 eval-row">
+                            <td class="p-3 font-semibold text-center mt-2">8</td>
+                            <td class="p-3">
+                                <div class="grid grid-cols-1 xl:grid-cols-2 gap-2 opt-group" data-answer="2">
+                                    <button class="opt-btn p-3 border border-border-grey rounded text-sm text-left hover:border-nexus-blue bg-white" data-val="1" onclick="selectEvalOption(this)">Write the temperature of the first (coldest) solution on the cuvette and measure the absorbance of the first solution.</button>
+                                    <button class="opt-btn p-3 border border-border-grey rounded text-sm text-left hover:border-nexus-blue bg-white" data-val="2" onclick="selectEvalOption(this)">Write the temperature of the first (coldest) solution on a piece of paper placed under the cuvette and measure the absorbance of the first solution.</button>
+                                </div>
+                            </td>
+                            <td class="p-3 text-center">
+                                <select class="w-full text-center font-bold vra-select mt-2" data-answer="Accuracy">
+                                    <option value="" disabled selected>Select...</option>
+                                    <option value="Validity">Validity</option>
+                                    <option value="Reliability">Reliability</option>
+                                    <option value="Accuracy">Accuracy</option>
+                                </select>
+                            </td>
+                            <td class="p-3">
+                                <select class="w-full just-select mt-2" data-answer="A">
+                                    <option value="" disabled selected>Select justification...</option>
+                                    <option value="C">This is necessary to provide a baseline reading against which all absorbance readings are calibrated.</option>
+                                    <option value="A">If the cuvette has writing on its side, this may interfere with the measurement of absorbance.</option>
+                                    <option value="B">This removes any pigment that remains on the surface of the beetroot pieces.</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <!-- Step 9 (Original Step 17) -->
+                        <tr class="border-b border-border-grey eval-row">
+                            <td class="p-3 font-semibold text-center mt-2">9</td>
+                            <td class="p-3">
+                                <div class="grid grid-cols-1 xl:grid-cols-2 gap-2 opt-group" data-answer="1">
+                                    <button class="opt-btn p-3 border border-border-grey rounded text-sm text-left hover:border-nexus-blue bg-white" data-val="1" onclick="selectEvalOption(this)">Measure the absorbance of the baseline solution in a cuvette again to recalibrate the colorimeter.</button>
+                                    <button class="opt-btn p-3 border border-border-grey rounded text-sm text-left hover:border-nexus-blue bg-white" data-val="2" onclick="selectEvalOption(this)">Do not measure the absorbance of the baseline solution in a cuvette again.</button>
+                                </div>
+                            </td>
+                            <td class="p-3 text-center">
+                                <select class="w-full text-center font-bold vra-select mt-2" data-answer="Accuracy">
+                                    <option value="" disabled selected>Select...</option>
+                                    <option value="Validity">Validity</option>
+                                    <option value="Reliability">Reliability</option>
+                                    <option value="Accuracy">Accuracy</option>
+                                </select>
+                            </td>
+                            <td class="p-3">
+                                <select class="w-full just-select mt-2" data-answer="A">
+                                    <option value="" disabled selected>Select justification...</option>
+                                    <option value="B">This removes subjectivity and bias from recording the results.</option>
+                                    <option value="A">This is necessary to provide a baseline reading against which all absorbance readings are calibrated.</option>
+                                    <option value="C">This minimizes mechanical damage to the cells, which may cause further pigment leakage.</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <!-- Step 10 (Original Step 18) -->
+                        <tr class="border-b border-border-grey bg-gray-50 eval-row">
+                            <td class="p-3 font-semibold text-center mt-2">10</td>
+                            <td class="p-3">
+                                <div class="grid grid-cols-1 xl:grid-cols-2 gap-2 opt-group" data-answer="1">
+                                    <button class="opt-btn p-3 border border-border-grey rounded text-sm text-left hover:border-nexus-blue bg-white" data-val="1" onclick="selectEvalOption(this)">Repeat the measurement of the solution's absorbance value two more times.</button>
+                                    <button class="opt-btn p-3 border border-border-grey rounded text-sm text-left hover:border-nexus-blue bg-white" data-val="2" onclick="selectEvalOption(this)">Repeat the collection of the solution's absorbance value one more time.</button>
+                                </div>
+                            </td>
+                            <td class="p-3 text-center">
+                                <select class="w-full text-center font-bold vra-select mt-2" data-answer="Reliability">
+                                    <option value="" disabled selected>Select...</option>
+                                    <option value="Validity">Validity</option>
+                                    <option value="Reliability">Reliability</option>
+                                    <option value="Accuracy">Accuracy</option>
+                                </select>
+                            </td>
+                            <td class="p-3">
+                                <select class="w-full just-select mt-2" data-answer="A">
+                                    <option value="" disabled selected>Select justification...</option>
+                                    <option value="A">This will provide three readings from which an anomalous data point may be identified, and a reliable mean value could be calculated.</option>
+                                    <option value="B">This allows for the water in the boiling tubes to reach the stated temperature before the beetroot is added.</option>
+                                    <option value="C">The precision of a 10 cm³ measuring cylinder is greater than a 50 cm³ cylinder.</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="mt-6 flex items-center justify-between">
+                    <button class="bg-nexus-blue hover:bg-dark-teal text-white font-semibold py-2 px-6 rounded transition-colors" onclick="checkEvalTable()">
+                        Check Evaluation Table
+                    </button>
+                    <span id="eval-feedback" class="font-semibold text-lg"></span>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Interactive Logic (Vanilla JS) -->
+    <script>
+        function checkFIB(containerId) {
+            const container = document.getElementById(containerId);
+            const inputs = container.querySelectorAll('.fib-input');
+            const feedbackBox = document.getElementById(`fib-feedback-${containerId.split('-')[2]}`);
+            
+            let correctCount = 0;
+            
+            inputs.forEach(input => {
+                const correctAnswers = input.dataset.answer.toLowerCase().split('|').map(s => s.trim());
+                const userAnswer = input.value.toLowerCase().trim();
+                
+                input.classList.remove('correct', 'incorrect');
+                
+                if (correctAnswers.includes(userAnswer)) {
+                    input.classList.add('correct');
+                    correctCount++;
+                } else {
+                    input.classList.add('incorrect');
+                }
+            });
+
+            if (correctCount === inputs.length) {
+                feedbackBox.textContent = `Excellent! ${correctCount}/${inputs.length} correct.`;
+                feedbackBox.style.color = '#C4D600'; 
+            } else {
+                feedbackBox.textContent = `You have ${inputs.length - correctCount} incorrect. Try again!`;
+                feedbackBox.style.color = '#E76F51'; 
+            }
+        }
+
+        function selectOption(selectedElement) {
+            const container = selectedElement.closest('.mcq-group');
+            if(container.querySelector('.correct') || container.querySelector('.incorrect')) return;
+
+            const options = container.querySelectorAll('.mcq-option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            
+            selectedElement.classList.add('selected');
+        }
+
+        function submitMCQ(containerId) {
+            const container = document.getElementById(containerId);
+            const options = container.querySelectorAll('.mcq-option');
+            const feedbackBox = container.querySelector('.mcq-feedback');
+            const submitBtn = container.querySelector('.mcq-submit');
+            
+            let selectedOption = null;
+            options.forEach(opt => {
+                if (opt.classList.contains('selected')) {
+                    selectedOption = opt;
+                }
+            });
+
+            if (!selectedOption) {
+                feedbackBox.textContent = "Please select an answer first.";
+                feedbackBox.style.color = '#F4B942'; 
+                return;
+            }
+
+            const isCorrect = selectedOption.dataset.correct === "true";
+            
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+                if (opt.dataset.correct === "true") {
+                    opt.classList.add('correct');
+                } else if (opt === selectedOption && !isCorrect) {
+                    opt.classList.add('incorrect');
+                }
+            });
+
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            const customFeedback = selectedOption.dataset.feedback || "";
+
+            if (isCorrect) {
+                feedbackBox.innerHTML = customFeedback || "Correct!";
+                feedbackBox.style.color = '#C4D600';
+            } else {
+                feedbackBox.innerHTML = customFeedback || "Incorrect. Try again.";
+                feedbackBox.style.color = '#E76F51';
+            }
+        }
+
+        const draggables = document.querySelectorAll('.draggable');
+        const dropZones = document.querySelectorAll('.drop-zone');
+
+        draggables.forEach(draggable => {
+            draggable.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', e.target.id);
+                setTimeout(() => { e.target.style.opacity = '0.5'; }, 0);
+            });
+            draggable.addEventListener('dragend', (e) => {
+                e.target.style.opacity = '1';
+            });
+        });
+
+        dropZones.forEach(zone => {
+            zone.addEventListener('dragover', (e) => {
+                e.preventDefault(); 
+                if (!zone.classList.contains('correct-drop') && zone.children.length === 0) {
+                    zone.classList.add('drag-over');
+                }
+            });
+
+            zone.addEventListener('dragleave', () => {
+                zone.classList.remove('drag-over');
+            });
+
+            zone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                zone.classList.remove('drag-over');
+
+                if (zone.children.length > 0) return;
+
+                const draggedId = e.dataTransfer.getData('text/plain');
+                const draggedElement = document.getElementById(draggedId);
+                
+                if (!draggedElement) return;
+
+                const requiredKeyword = zone.dataset.match;
+                const droppedKeyword = draggedElement.dataset.keyword;
+
+                if (requiredKeyword === droppedKeyword) {
+                    zone.appendChild(draggedElement);
+                    zone.classList.add('correct-drop');
+                    draggedElement.setAttribute('draggable', 'false'); 
+                    draggedElement.style.cursor = 'default';
+                    draggedElement.classList.remove('border-nexus-blue', 'text-nexus-blue');
+                    draggedElement.classList.add('border-none', 'bg-transparent', 'text-dark-teal');
+                    draggedElement.style.boxShadow = 'none';
+                } else {
+                    zone.classList.add('shake-animation');
+                    setTimeout(() => { zone.classList.remove('shake-animation'); }, 400); 
+                }
+            });
+        });
+
+        // Evaluation Table Logic
+        function selectEvalOption(btn) {
+            const group = btn.closest('.opt-group');
+            const btns = group.querySelectorAll('.opt-btn');
+            
+            // Remove selection and feedback classes from all buttons in the group
+            btns.forEach(b => {
+                b.classList.remove('selected', 'correct-btn', 'incorrect-btn');
+            });
+            
+            // Highlight the clicked button
+            btn.classList.add('selected');
+        }
+
+        function checkEvalTable() {
+            const rows = document.querySelectorAll('.eval-row');
+            const feedbackBox = document.getElementById('eval-feedback');
+            let totalInputs = 0;
+            let correctCount = 0;
+
+            rows.forEach(row => {
+                // Check Options (Buttons)
+                const optGroup = row.querySelector('.opt-group');
+                if (optGroup) {
+                    totalInputs++;
+                    const expected = optGroup.dataset.answer;
+                    const selectedBtn = optGroup.querySelector('.opt-btn.selected');
+                    
+                    const allBtns = optGroup.querySelectorAll('.opt-btn');
+                    allBtns.forEach(b => b.classList.remove('correct-btn', 'incorrect-btn'));
+
+                    if (selectedBtn) {
+                        if (selectedBtn.dataset.val === expected) {
+                            selectedBtn.classList.add('correct-btn');
+                            correctCount++;
+                        } else {
+                            selectedBtn.classList.add('incorrect-btn');
+                        }
+                    }
+                }
+
+                // Check Dropdowns (VRA & Justification)
+                const selects = row.querySelectorAll('select');
+                selects.forEach(select => {
+                    totalInputs++;
+                    const expected = select.dataset.answer;
+                    const userVal = select.value;
+
+                    select.classList.remove('correct', 'incorrect');
+
+                    if (userVal !== "") {
+                        if (userVal === expected) {
+                            select.classList.add('correct');
+                            correctCount++;
+                        } else {
+                            select.classList.add('incorrect');
+                        }
+                    }
+                });
+            });
+
+            if (correctCount === totalInputs && totalInputs > 0) {
+                feedbackBox.textContent = `Outstanding! All ${totalInputs} selections are correct.`;
+                feedbackBox.style.color = '#C4D600';
+            } else {
+                feedbackBox.textContent = `You have ${correctCount} out of ${totalInputs} correct. Review the red highlighted answers.`;
+                feedbackBox.style.color = '#E76F51';
+            }
+        }
+    </script>
+</body>
+</html>
